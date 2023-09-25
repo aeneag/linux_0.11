@@ -1,12 +1,12 @@
 !
-!/****************************************************************
+! ****************************************************************
 ! *@file       : bootsect.s
 ! *@description: analysis linux kernel start
 ! *@time       : 2023/09/23 13:51:17
 ! *@author     : Nick Xia
 ! *@blog       : https://aeneag.xyz
-!*****************************************************************/
-
+! *****************************************************************
+!
 
 !
 ! SYS_SIZE is the number of clicks (16 bytes) to be loaded.
@@ -59,18 +59,31 @@ start:
 	mov	ds,ax	     		! copy ax to ds , register ds save 0x07c0
 	mov	ax,#INITSEG			! ax = 0x9000
 	mov	es,ax				! register es = 0x9000
-	mov	cx,#256				! cx = 256
-	sub	si,si				! si = 0, clear si 
-	sub	di,di				! di = 0, clear si
-	rep						! 
-	movw					!
-	jmpi	go,INITSEG		!
-go:	mov	ax,cs
-	mov	ds,ax
-	mov	es,ax
+	mov	cx,#256				! init,cx = 256
+	sub	si,si				! init,si = 0, clear si 
+	sub	di,di				! init,di = 0, clear si
+	rep						! Repeat for the next instruction
+	movw					! copy ds:si to es:di. Copy the code of this file from the beginning of 0x07c00 to 0x90000.
+	jmpi	go,INITSEG		! jmpi go,0x90000. Now,After copying the code to 0x90000, it continues to execute the code in that file, so it jumps to go and continues next.
+!
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/09/25 19:43:24
+! * @desc   : The main function of the above code is that the starting 
+!             code executes at 0x07c00, then moves to 0x90000 and jumps 
+!             to go to continue executing the subsequent code.
+!
+go:	mov	ax,cs				! ax = code segment = 0x9000,because cmd: jmpi go,0x9000 means cs = 0x9000
+	mov	ds,ax				! ds = 0x9000, data segment
+	mov	es,ax				! es = 0x9000, 
 ! put stack at 0x9ff00.
-	mov	ss,ax
-	mov	sp,#0xFF00		! arbitrary value >>512
+	mov	ss,ax				! ss = 0x9000, stack segment
+	mov	sp,#0xFF00			! arbitrary value >>512, The actual address pointed to by sp is 0x9ff00
+
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/09/25 20:07:50
+! * @desc   : Perform some register initialization, cs, ds, es, ss, set stack tops.
+! *
 
 ! load the setup-sectors directly after the bootblock.
 ! Note that 'es' is already set up.
