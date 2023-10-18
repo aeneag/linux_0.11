@@ -88,6 +88,12 @@ go:	mov	ax,cs				! ax = code segment = 0x9000,because cmd: jmpi go,0x9000 means 
 ! load the setup-sectors directly after the bootblock.
 ! Note that 'es' is already set up.
 
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/11 15:20:37
+! * @desc   : load_setup : Copy 512*4 bytes of setup.s to 0x90200 ,
+! *           if the copy is unsuccessful keep executing.
+! *
 load_setup:
 	mov	dx,#0x0000		! drive 0, head 0
 	mov	cx,#0x0002		! sector 2, track 0
@@ -99,6 +105,15 @@ load_setup:
 	mov	ax,#0x0000		! reset the diskette
 	int	0x13
 	j	load_setup
+
+
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/11 15:35:46
+! * @desc   : ok_load_setup : 
+! *           1. show infos
+! *           2. copy other code(system code) to 0x10000
+! *
 
 ok_load_setup:
 

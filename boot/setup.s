@@ -27,6 +27,15 @@ begdata:
 begbss:
 .text
 
+
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/11 16:50:51
+! * @desc   : Commenting only important functional code
+! *           
+! *
+
+
 entry start
 start:
 
@@ -112,6 +121,15 @@ is_disk1:
 
 	mov	ax,#0x0000
 	cld			! 'direction'=0, movs moves forward
+
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/11 16:56:07
+! * @desc   : copy code from 0x1000-0x9000 to 0x0-0x8000
+! *           
+! *
+
+
 do_move:
 	mov	es,ax		! destination segment
 	add	ax,#0x1000
@@ -126,6 +144,12 @@ do_move:
 	jmp	do_move
 
 ! then we load the segment descriptors
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/12 09:20:59
+! * @desc   : Prepare for real mode switching to protected mode, set gdt and idt.
+! *           If you can't understand this, please find relevant information from Internet.
+! *
 
 end_move:
 	mov	ax,#SETUPSEG	! right, forgot this at first. didn't work :-)
@@ -133,6 +157,12 @@ end_move:
 	lidt	idt_48		! load idt with 0,0
 	lgdt	gdt_48		! load gdt with whatever appropriate
 
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/12 09:46:31
+! * @desc   : Address line changed from 20 to 32 bits.
+! *           
+! *
 ! that was painless, now we enable A20
 
 	call	empty_8042
@@ -187,7 +217,12 @@ end_move:
 ! things as simple as possible, we do no register set-up or anything,
 ! we let the gnu-compiled 32-bit programs do that. We just jump to
 ! absolute address 0x00000, in 32-bit protected mode.
-
+! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/12 10:02:49
+! * @desc   : start protected mode
+! *           
+! *
 	mov	ax,#0x0001	! protected mode (PE) bit
 	lmsw	ax		! This is it!
 	jmpi	0,8		! jmp offset 0 of segment 8 (cs)

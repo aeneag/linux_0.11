@@ -5,6 +5,12 @@
 >
 > Blog    : https://aeneag.xyz  
 
+## 2023/10/18
+
+updating bootsect.s head.s setup.s. finish!
+
+Updates are a bit slow, but will keep updating!
+
 ## 2023/09/25
 
 Commenting some initialization code in bootsect.s

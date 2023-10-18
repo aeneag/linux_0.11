@@ -11,6 +11,15 @@
  * the page directory will exist. The startup code will be overwritten by
  * the page directory.
  */
+
+ ! 
+! * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+! * @time   : 2023/10/12 14:42:31
+! * @desc   : head.s two main functions
+! *           1. resetting gdt and idt       
+! *           2. Setting up paging
+! *           
+!
 .text
 .globl _idt,_gdt,_pg_dir,_tmp_floppy_area
 _pg_dir:
