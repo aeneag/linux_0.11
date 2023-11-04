@@ -3,6 +3,14 @@
  *
  *  (C) 1991  Linus Torvalds
  */
+/****************************************************************
+  *@file       : main.c
+  *@description: kernel start file
+  *@time       : 2023/11/04 08:47:32
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
+
 
 #define __LIBRARY__
 #include <unistd.h>
@@ -100,12 +108,25 @@ static long buffer_memory_end = 0;
 static long main_memory_start = 0;
 
 struct drive_info { char dummy[32]; } drive_info;
-
+/**
+ * @brief 	: main function
+ * @param 	: void
+ * @return 	: void
+ * @time    : 2023/11/04 08:46:52
+ */
 void main(void)		/* This really IS void, no error here. */
 {			/* The startup routine assumes (well, ...) this */
 /*
  * Interrupts are still disabled. Do necessary setups, then
  * enable them
+ */
+
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/11/04 08:49:20
+ * @desc   : Getting some parameters, root devices,
+ * 			 memory boundaries, etc., the address to
+ * 			 read is the one you get in the bios.
  */
  	ROOT_DEV = ORIG_ROOT_DEV;
  	drive_info = DRIVE_INFO;
@@ -119,23 +140,48 @@ void main(void)		/* This really IS void, no error here. */
 		buffer_memory_end = 2*1024*1024;
 	else
 		buffer_memory_end = 1*1024*1024;
+	/* The settings here set the starting location of
+	   main memory behind the memory buffer according
+	   to different hardware devices. */
 	main_memory_start = buffer_memory_end;
+/******************************************************************/
 #ifdef RAMDISK
 	main_memory_start += rd_init(main_memory_start, RAMDISK*1024);
 #endif
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/11/04 08:53:13
+ * @desc   : init 
+ */
+	/* memory init */
 	mem_init(main_memory_start,memory_end);
+	/* interrupt init */
 	trap_init();
+	/* Block device initialization subprogram 
+	   just init list function*/
 	blk_dev_init();
+	/* character device init(NULL) */
 	chr_dev_init();
+	/* character Device Character device initialization,
+	   setting up serial port, display, and keyboard interrupts */
 	tty_init();
+	/* setting boot time */
 	time_init();
+	/* process scheduling init */
 	sched_init();
+	/* Memory buffer initialization */
 	buffer_init(buffer_memory_end);
+	/* hard disk init */
 	hd_init();
+	/* floppy drive initialization */
 	floppy_init();
+	/* start interrupt */
 	sti();
+	/* start user mode */
 	move_to_user_mode();
+	/* creating a process */
 	if (!fork()) {		/* we count on this going ok */
+		/* init  */
 		init();
 	}
 /*

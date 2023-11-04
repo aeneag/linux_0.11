@@ -5,6 +5,12 @@
 >
 > Blog    : https://aeneag.xyz  
 
+## 2023/11/04
+
+The main function is commented out.
+
+It may not be accomplished this year, come on!
+
 ## 2023/10/18
 
 updating bootsect.s head.s setup.s. finish!
