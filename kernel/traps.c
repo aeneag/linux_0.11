@@ -3,6 +3,13 @@
  *
  *  (C) 1991  Linus Torvalds
  */
+/****************************************************************
+  *@file       : traps.c
+  *@description: 
+  *@time       : 2023/11/11 09:45:26
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
 
 /*
  * 'Traps.c' handles hardware traps and faults after we have saved some
@@ -177,7 +184,16 @@ void do_reserved(long esp, long error_code)
 {
 	die("reserved (15,17-47) error",esp,error_code);
 }
-
+/**
+ * @brief  : Exception (trap) interrupt program initialization subroutine. 
+ * 			 Setting up their interrupt call gates (interrupt vectors).
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/11 09:33:29
+ * @descripton :
+ * 			 Both set_trap_gate() and set_system_gate() use the Trap Gate in
+ * 			 the interrupt descriptor table IDT.
+ */
 void trap_init(void)
 {
 	int i;
@@ -199,8 +215,13 @@ void trap_init(void)
 	set_trap_gate(14,&page_fault);
 	set_trap_gate(15,&reserved);
 	set_trap_gate(16,&coprocessor_error);
+	/* reserved interrupt, each piece of hardware will reset its own
+	   trapdoor when it is initialized afterwards */
 	for (i=17;i<48;i++)
 		set_trap_gate(i,&reserved);
+	/* Set the coprocessor interrupt 0x2d(45) trapdoor descriptor and
+	   allow it to generate interrupt requests. Set the parallel port
+	   interrupt descriptor */
 	set_trap_gate(45,&irq13);
 	outb_p(inb_p(0x21)&0xfb,0x21);
 	outb(inb_p(0xA1)&0xdf,0xA1);

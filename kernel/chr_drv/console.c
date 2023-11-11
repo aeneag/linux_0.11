@@ -3,7 +3,13 @@
  *
  *  (C) 1991  Linus Torvalds
  */
-
+/****************************************************************
+  *@file       : console.c
+  *@description: All of the console's action functions, the logic is relatively simple.
+  *@time       : 2023/11/11 10:33:45
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
 /*
  *	console.c
  *
@@ -614,18 +620,35 @@ void con_write(struct tty_struct * tty)
  * Reads the information preserved by setup.s to determine the current display
  * type and sets everything accordingly.
  */
+/**
+ * @brief  : Initialize Console Interrupt
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/11 10:39:29
+ */
 void con_init(void)
 {
 	register unsigned char a;
 	char *display_desc = "????";
 	char *display_ptr;
 
+	/* Number of columns of characters to be displayed by the monitor. */
 	video_num_columns = ORIG_VIDEO_COLS;
+	/* The number of bytes to use per line. */
 	video_size_row = video_num_columns * 2;
+	/* The number of rows of characters to be displayed by the monitor. */
 	video_num_lines = ORIG_VIDEO_LINES;
+	/* Currently displaying page. */
 	video_page = ORIG_VIDEO_PAGE;
+	/* Erase Characters (0x20 displays characters, 0x07 is an attribute). */
 	video_erase_char = 0x0720;
-	
+	/* Here the settings are set by category according to the different properties of the monitor. */
+	/* video_mem_start  Sets the memory start address. */
+	/* video_port_reg   Set the index register port. */
+	/* video_port_val   Set the data register port. */
+	/* video_type       Sets the display type. */
+	/* video_mem_end    Sets the display end-of-memory address. */
+	/* display_desc     Sets the display description string. */
 	if (ORIG_VIDEO_MODE == 7)			/* Is this a monochrome display? */
 	{
 		video_mem_start = 0xb0000;
@@ -664,26 +687,43 @@ void con_init(void)
 	}
 
 	/* Let the user known what kind of display driver we are using */
-	
+
+	/* We display a description string in the upper right corner of
+	   the screen. The method used is to write the string directly to
+	   the corresponding location in the display memory. First, the
+	   display pointer display_ptr is pointed to the right end of the
+	   first line of the screen 4 characters short (each character
+	   takes 2 bytes, so minus 8), then the characters of the string
+	   are copied cyclically, and every time a character is copied,
+	   the attribute byte is left blank. */
 	display_ptr = ((char *)video_mem_start) + video_size_row - 8;
 	while (*display_desc)
 	{
 		*display_ptr++ = *display_desc++;
-		display_ptr++;
+		display_ptr++;  // blank space
 	}
 	
 	/* Initialize the variables used for scrolling (mostly EGA/VGA)	*/
-	
+	/* Start of scrolling display memory address */
 	origin	= video_mem_start;
+	/* End of scrolling display memory address */
 	scr_end	= video_mem_start + video_num_lines * video_size_row;
+	/* Top line number. */
 	top	= 0;
+	/* Bottom row number. */
 	bottom	= video_num_lines;
 
+	/* Initialize the cursor position x,y and the corresponding memory location. */
 	gotoxy(ORIG_X,ORIG_Y);
+	/* Setting the Keyboard Interrupt Trapdoor */
 	set_trap_gate(0x21,&keyboard_interrupt);
+	/* Unmask the keyboard interrupt and allow IRQ1. */
 	outb_p(inb_p(0x21)&0xfd,0x21);
+	/* Read keypad port 0x61 */
 	a=inb_p(0x61);
+	/* Set to disable keypad operation (bit 7 set). */
 	outb_p(a|0x80,0x61);
+	/* Allow the keypad to operate again to reset the keypad operation. */
 	outb(a,0x61);
 }
 /* from bsd-net-2: */

@@ -1,3 +1,11 @@
+/****************************************************************
+  *@file       : blk.h
+  *@description: blk head file
+  *@time       : 2023/11/11 09:53:25
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
+
 #ifndef _BLK_H
 #define _BLK_H
 
@@ -21,15 +29,15 @@
  * read/write completion.
  */
 struct request {
-	int dev;		/* -1 if no request */
-	int cmd;		/* READ or WRITE */
-	int errors;
-	unsigned long sector;
-	unsigned long nr_sectors;
-	char * buffer;
-	struct task_struct * waiting;
-	struct buffer_head * bh;
-	struct request * next;
+	int dev;		/* -1 if no request */   /* device No. -1 means spare */
+	int cmd;		/* READ or WRITE */      /* read / write */
+	int errors;								 /* error count */
+	unsigned long sector;					 /* starting sector */
+	unsigned long nr_sectors;				 /* sector numbers */
+	char * buffer;							 /* Data buffer, that is, what bit of memory the data is placed in after reading the disk */
+	struct task_struct * waiting;			 /* Indicates which process used the request */
+	struct buffer_head * bh;				 /* which buffer */
+	struct request * next;					 /* next request */
 };
 
 /*

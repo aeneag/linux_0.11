@@ -3,7 +3,13 @@
  *
  * (C) 1991 Linus Torvalds
  */
-
+/****************************************************************
+  *@file       : ll_rw_blk.c
+  *@description: 
+  *@time       : 2023/11/11 09:45:13
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
 /*
  * This handles all read/write requests to block devices
  */
@@ -38,7 +44,14 @@ struct blk_dev_struct blk_dev[NR_BLK_DEV] = {
 	{ NULL, NULL },		/* dev tty */
 	{ NULL, NULL }		/* dev lp */
 };
-
+/**
+ * @brief  : Locks the specified buffer bh. puts itself to sleep
+ *           (waits uninterruptibly) if the specified buffer is
+ *           already locked by another task.
+ * @param  : buffer_head
+ * @return : void
+ * @time   : 2023/11/11 09:45:45
+ */
 static inline void lock_buffer(struct buffer_head * bh)
 {
 	cli();
@@ -47,7 +60,12 @@ static inline void lock_buffer(struct buffer_head * bh)
 	bh->b_lock=1;
 	sti();
 }
-
+/**
+ * @brief  : Releases (unlocks) the locked buffer.
+ * @param  : buffer_head
+ * @return : void
+ * @time   : 2023/11/11 09:47:36
+ */
 static inline void unlock_buffer(struct buffer_head * bh)
 {
 	if (!bh->b_lock)
@@ -153,7 +171,14 @@ void ll_rw_block(int rw, struct buffer_head * bh)
 	}
 	make_request(major,rw,bh);
 }
-
+/**
+ * @brief  : Block Device Initialization Functions
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/11 09:44:55
+ * @descripton :
+ *           just init dev and next variablies.
+ */
 void blk_dev_init(void)
 {
 	int i;

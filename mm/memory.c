@@ -395,7 +395,15 @@ void do_no_page(unsigned long error_code,unsigned long address)
 	free_page(page);
 	oom();
 }
-
+/**
+ * @brief  : Physical memory initialization.
+ * @param  : start_mem, Physical memory start location that can be used for paging.
+ * @param  : end_mem, Maximum address of actual physical memory.
+ * @return : void
+ * @time   : 2023/11/11 09:13:45
+ * @description : 
+ * 			 Up to 16Mb of memory can be used, 0 - 1Mb of memory space is used for the kernel system.
+ */
 void mem_init(long start_mem, long end_mem)
 {
 	int i;

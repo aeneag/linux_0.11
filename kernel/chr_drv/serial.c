@@ -3,6 +3,13 @@
  *
  *  (C) 1991  Linus Torvalds
  */
+/****************************************************************
+  *@file       : serial.c
+  *@description: 
+  *@time       : 2023/11/11 10:23:48
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
 
 /*
  *	serial.c
@@ -33,13 +40,22 @@ static void init(int port)
 	outb_p(0x0d,port+1);	/* enable all intrs but writes */
 	(void)inb(port);	/* read data port to reset things (?) */
 }
-
+/**
+ * @brief  : Initializing the serial interrupt program and serial interface.
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/11 10:23:54
+ */
 void rs_init(void)
 {
+	/* Setting the interrupt gate vector for serial port 1 (hardware IRQ4 signal) */
 	set_intr_gate(0x24,rs1_interrupt);
+	/* Setting the interrupt gate vector for serial port 2 (hardware IRQ3 signal) */
 	set_intr_gate(0x23,rs2_interrupt);
+	/* Initializing the Serial Port 1 and 2 */
 	init(tty_table[1].read_q.data);
 	init(tty_table[2].read_q.data);
+	/* enable intr */
 	outb(inb_p(0x21)&0xE7,0x21);
 }
 

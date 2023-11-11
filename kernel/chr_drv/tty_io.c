@@ -3,7 +3,13 @@
  *
  *  (C) 1991  Linus Torvalds
  */
-
+/****************************************************************
+  *@file       : tty_io.c
+  *@description: 
+  *@time       : 2023/11/11 10:04:53
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
 /*
  * 'tty_io.c' gives an orthogonal feeling to tty's, be they consoles
  * or rs-channels. It also implements echoing, cooked mode etc.
@@ -101,10 +107,18 @@ struct tty_queue * table_list[]={
 	&tty_table[1].read_q, &tty_table[1].write_q,
 	&tty_table[2].read_q, &tty_table[2].write_q
 	};
-
+/**
+ * @brief  : tty terminal initialization function. 
+ *           Initializes serial port terminals and console terminals.
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/11 10:17:40
+ */
 void tty_init(void)
 {
+	/* Initialize the serial interrupt program and serial interfaces 1 and 2. */
 	rs_init();
+	/* Initializing the Console Terminal. */
 	con_init();
 }
 

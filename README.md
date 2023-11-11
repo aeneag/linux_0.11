@@ -5,6 +5,10 @@
 >
 > Blog    : https://aeneag.xyz  
 
+## 2023/11/11
+
+updating mem_init, trap_init, blk_dev_init, tty_init functions.
+
 ## 2023/11/04
 
 The main function is commented out.
