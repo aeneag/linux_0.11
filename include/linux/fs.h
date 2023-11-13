@@ -64,20 +64,24 @@ void buffer_init(long buffer_end);
 __asm__("incl %0\n\tandl $4095,%0"::"m" (head))
 
 typedef char buffer_block[BLOCK_SIZE];
-
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/11/13 20:06:19
+ * @desc   : buffer head struct
+ */
 struct buffer_head {
 	char * b_data;			/* pointer to data block (1024 bytes) */
 	unsigned long b_blocknr;	/* block number */
 	unsigned short b_dev;		/* device (0 = free) */
-	unsigned char b_uptodate;
+	unsigned char b_uptodate;   /* update flag */
 	unsigned char b_dirt;		/* 0-clean,1-dirty */
 	unsigned char b_count;		/* users using this block */
 	unsigned char b_lock;		/* 0 - ok, 1 -locked */
-	struct task_struct * b_wait;
-	struct buffer_head * b_prev;
-	struct buffer_head * b_next;
-	struct buffer_head * b_prev_free;
-	struct buffer_head * b_next_free;
+	struct task_struct * b_wait;  /* Tasks waiting for this buffer to be unlocked */
+	struct buffer_head * b_prev;  /* hash prev */
+	struct buffer_head * b_next;  /* hasj next */
+	struct buffer_head * b_prev_free;  /* free prev */
+	struct buffer_head * b_next_free;  /* free next */
 };
 
 struct d_inode {

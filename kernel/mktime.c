@@ -3,6 +3,14 @@
  *
  *  (C) 1991  Linus Torvalds
  */
+/****************************************************************
+  *@file       : mktime.c
+  *@description: calculating open pc time
+  *@time       : 2023/11/13 19:00:14
+  *@author     : Nick Xia
+  *@blog       : https://aeneag.xyz
+*****************************************************************/
+
 
 #include <time.h>
 
@@ -37,7 +45,14 @@ static int month[12] = {
 	DAY*(31+29+31+30+31+30+31+31+30+31),
 	DAY*(31+29+31+30+31+30+31+31+30+31+30)
 };
-
+/**
+ * @brief  : Calculate the number of seconds elapsed from 0:00
+ *           a.m. on January 1, 1970 to the day of power-on as
+ *           the power-on time.
+ * @param  : time str
+ * @return : all sec 
+ * @time   : 2023/11/13 18:59:38
+ */
 long kernel_mktime(struct tm * tm)
 {
 	long res;

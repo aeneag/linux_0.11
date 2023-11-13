@@ -1,6 +1,10 @@
 #ifndef _HEAD_H
 #define _HEAD_H
-
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/11/13 19:30:18
+ * @desc   : Segment descriptor data structure, 8 bytes, a total of 256
+ */
 typedef struct desc_struct {
 	unsigned long a,b;
 } desc_table[256];

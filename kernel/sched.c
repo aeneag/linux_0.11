@@ -381,17 +381,26 @@ int sys_nice(long increment)
 		current->priority -= increment;
 	return 0;
 }
-
+/**
+ * @brief  : possess init function
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/13 19:11:35
+ */
 void sched_init(void)
 {
 	int i;
+	/* Descriptor table structure pointer */
 	struct desc_struct * p;
 
 	if (sizeof(struct sigaction) != 16)
 		panic("Struct sigaction MUST be 16 bytes");
+	/* Setting the task state segment descriptor and local data
+	   table descriptor for the initial task (task 0) */
 	set_tss_desc(gdt+FIRST_TSS_ENTRY,&(init_task.task.tss));
 	set_ldt_desc(gdt+FIRST_LDT_ENTRY,&(init_task.task.ldt));
 	p = gdt+2+FIRST_TSS_ENTRY;
+	/* clear all descriptor, excluding task 0 */
 	for(i=1;i<NR_TASKS;i++) {
 		task[i] = NULL;
 		p->a=p->b=0;
@@ -401,12 +410,17 @@ void sched_init(void)
 	}
 /* Clear NT, so that we won't have troubles with that later on */
 	__asm__("pushfl ; andl $0xffffbfff,(%esp) ; popfl");
+	/* Load TSS for task 0 into task register tr. */
 	ltr(0);
+	/*  Load local descriptor table into local descriptor table registers. */
 	lldt(0);
 	outb_p(0x36,0x43);		/* binary, mode 3, LSB/MSB, ch 0 */
 	outb_p(LATCH & 0xff , 0x40);	/* LSB */
 	outb(LATCH >> 8 , 0x40);	/* MSB */
+	/* Setting the clock interrupt handler handle (setting the clock interrupt gate). */
 	set_intr_gate(0x20,&timer_interrupt);
+	/* Modify the interrupt controller mask code to allow clock interrupts. */
 	outb(inb_p(0x21)&~0x01,0x21);
+	/* Setting the system call interrupt gate */
 	set_system_gate(0x80,&system_call);
 }

@@ -344,17 +344,28 @@ struct buffer_head * breada(int dev,int first, ...)
 	brelse(bh);
 	return (NULL);
 }
-
+/**
+ * @brief  : init buffer 
+ * @param  : buffer end address
+ * @return : void
+ * @time   : 2023/11/13 20:05:53
+ * @desc   : 16mb, 4mb end. 8mb, 2mb end.
+ *             Initialization looks relatively simple, the code is easy to
+ *           understand, and the main thing to understand is what its logic
+ *           is and what it does.
+ */
 void buffer_init(long buffer_end)
 {
 	struct buffer_head * h = start_buffer;
 	void * b;
 	int i;
-
+	/* Determine the buffer end address according to the hardware environment. */
 	if (buffer_end == 1<<20)
 		b = (void *) (640*1024);
 	else
 		b = (void *) buffer_end;
+	/* Initialize the buffer, create a chained list of free buffer rings,
+	   and get the number of buffer blocks in the system */
 	while ( (b -= BLOCK_SIZE) >= ((void *) (h+1)) ) {
 		h->b_dev = 0;
 		h->b_dirt = 0;
@@ -376,6 +387,8 @@ void buffer_init(long buffer_end)
 	free_list = start_buffer;
 	free_list->b_prev_free = h;
 	h->b_next_free = free_list;
+	/* Initialize the hash table (hash table, hash table)
+	   and set all pointers in the table to NULL. */
 	for (i=0;i<NR_HASH;i++)
 		hash_table[i]=NULL;
 }	

@@ -74,13 +74,23 @@ extern long startup_time;
  * bios-listing reading. Urghh.
  */
 
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/11/13 19:04:20
+ * @desc   : Read and write to the port
+ */
 #define CMOS_READ(addr) ({ \
 outb_p(0x80|addr,0x70); \
 inb_p(0x71); \
 })
 
 #define BCD_TO_BIN(val) ((val)=((val)&15) + ((val)>>4)*10)
-
+/**
+ * @brief  : get time from CMOS, calculate open pc time
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/13 18:47:03
+ */
 static void time_init(void)
 {
 	struct tm time;
@@ -100,6 +110,7 @@ static void time_init(void)
 	BCD_TO_BIN(time.tm_mon);
 	BCD_TO_BIN(time.tm_year);
 	time.tm_mon--;
+	/* get open pc time(seconds) */
 	startup_time = kernel_mktime(&time);
 }
 

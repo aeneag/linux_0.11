@@ -5,6 +5,12 @@
 >
 > Blog    : https://aeneag.xyz  
 
+## 2023/11/13
+
+updating time_init, sched_init, buffer_init functions.
+
+Understanding the 0.11 kernel is going to be accelerated on the agenda !!!
+
 ## 2023/11/11
 
 updating mem_init, trap_init, blk_dev_init, tty_init functions.
