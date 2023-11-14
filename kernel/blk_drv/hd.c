@@ -339,10 +339,17 @@ void do_hd_request(void)
 	} else
 		panic("unknown hd-command");
 }
-
+/**
+ * @brief  : Hard disk system initialization
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/14 18:49:05
+ */
 void hd_init(void)
 {
+	/* pointer function do_hd_request */
 	blk_dev[MAJOR_NR].request_fn = DEVICE_REQUEST;
+	/* Setting the Hard Disk Interrupt Gate Vector */
 	set_intr_gate(0x2E,&hd_interrupt);
 	outb_p(inb_p(0x21)&0xfb,0x21);
 	outb(inb_p(0xA1)&0xbf,0xA1);

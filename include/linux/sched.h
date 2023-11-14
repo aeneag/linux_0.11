@@ -74,12 +74,16 @@ struct tss_struct {
 	long	trace_bitmap;	/* bits: trace 0, bitmap 16-31 */
 	struct i387_struct i387;
 };
-
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/11/14 19:20:23
+ * @desc   : schedule task
+ */
 struct task_struct {
 /* these are hardcoded - don't touch */
 	long state;	/* -1 unrunnable, 0 runnable, >0 stopped */
-	long counter;
-	long priority;
+	long counter;  /* time-- */
+	long priority; /* task priority */
 	long signal;
 	struct sigaction sigaction[32];
 	long blocked;	/* bitmap of masked signals */
@@ -103,7 +107,7 @@ struct task_struct {
 /* ldt for this task 0 - zero 1 - cs 2 - ds&ss */
 	struct desc_struct ldt[3];
 /* tss for this task */
-	struct tss_struct tss;
+	struct tss_struct tss; 
 };
 
 /*

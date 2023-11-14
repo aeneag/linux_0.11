@@ -453,10 +453,17 @@ void do_fd_request(void)
 		panic("do_fd_request: unknown command");
 	add_timer(ticks_to_floppy_on(current_drive),&floppy_on_interrupt);
 }
-
+/**
+ * @brief  : floopy init
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/14 18:56:06
+ */
 void floppy_init(void)
 {
+	/* pointer function do_fd_request */
 	blk_dev[MAJOR_NR].request_fn = DEVICE_REQUEST;
+	/* Setting the floppy Disk Interrupt Gate Vector */
 	set_trap_gate(0x26,&floppy_interrupt);
 	outb(inb_p(0x21)&~0x40,0x21);
 }

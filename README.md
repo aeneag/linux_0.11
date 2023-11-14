@@ -1,9 +1,16 @@
 # linux_0.11
+
 > analysis linux kernel (version 0.11)
 >
 > Author : Nick Xia
 >
 > Blog    : https://aeneag.xyz  
+
+## 2023/11/13
+
+updating hd_init, floppy_init, and some schedule task.
+
+today just updating a little.
 
 ## 2023/11/13
 
