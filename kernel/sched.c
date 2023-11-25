@@ -101,6 +101,12 @@ void math_state_restore()
  * tasks can run. It can not be killed, and it cannot sleep. The 'state'
  * information in task[0] is never used.
  */
+/**
+ * @brief  : switch process
+ * @param  : void
+ * @return : void
+ * @time   : 2023/11/25 09:54:43
+ */
 void schedule(void)
 {
 	int i,next,c;
@@ -301,7 +307,15 @@ void add_timer(long jiffies, void (*fn)(void))
 	}
 	sti();
 }
-
+/**
+ * @brief  : For a process when it runs out of execution time slice,
+ *           a task switch is performed. And a timing update job is
+ *           performed.
+ * @param  : The parameter cpl is the current privilege level 0 or 3,
+ *           with 0 indicating that kernel code is being executed.
+ * @return : void
+ * @time   : 2023/11/25 09:47:10
+ */
 void do_timer(long cpl)
 {
 	extern int beepcount;
@@ -329,9 +343,12 @@ void do_timer(long cpl)
 	}
 	if (current_DOR & 0xf0)
 		do_floppy_timer();
+	/* Determine whether the current is greater than 0,
+	   if greater then return, otherwise switch the process */
 	if ((--current->counter)>0) return;
 	current->counter=0;
 	if (!cpl) return;
+	/* switch process */
 	schedule();
 }
 
