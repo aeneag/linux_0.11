@@ -70,7 +70,13 @@ extern int sys_sgetmask();
 extern int sys_ssetmask();
 extern int sys_setreuid();
 extern int sys_setregid();
-
+/**
+ * @author : Nick Xia ;  @blog  :https://aeneag.xyz/
+ * @time   : 2023/12/02 09:23:22
+ * @desc   : System call function pointer table. Used
+ *           for system call interrupt handler (int 0x80)
+ *           as a jump table.
+ */
 fn_ptr sys_call_table[] = { sys_setup, sys_exit, sys_fork, sys_read,
 sys_write, sys_open, sys_close, sys_waitpid, sys_creat, sys_link,
 sys_unlink, sys_execve, sys_chdir, sys_time, sys_mknod, sys_chmod,

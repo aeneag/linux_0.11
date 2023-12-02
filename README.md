@@ -6,6 +6,10 @@
 >
 > Blog    : https://aeneag.xyz  
 
+## 2023/12/02
+
+A little bit of an update, not in the mood today, trying to rest.
+
 ## 2023/11/25
 
 just updating a little
