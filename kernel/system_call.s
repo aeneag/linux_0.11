@@ -77,6 +77,7 @@ reschedule:
 	pushl $ret_from_sys_call
 	jmp _schedule
 .align 2
+# int 0x80 -- linux system call entry point (call interrupt int 0x80, call number in eax).
 _system_call:
 	cmpl $nr_system_calls-1,%eax
 	ja bad_sys_call
@@ -205,6 +206,7 @@ _sys_execve:
 	ret
 
 .align 2
+# find a new empty process, and copy it.
 _sys_fork:
 	call _find_empty_process
 	testl %eax,%eax

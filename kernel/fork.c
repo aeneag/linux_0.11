@@ -65,6 +65,12 @@ int copy_mem(int nr,struct task_struct * p)
  * information (task[nr]) and sets up the necessary registers. It
  * also copies the data segment in it's entirety.
  */
+/**
+ * @brief  : copy process
+ * @param  : ss
+ * @return : pid
+ * @time   : 2024/05/25 10:55:04
+ */
 int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 		long ebx,long ecx,long edx,
 		long fs,long es,long ds,
@@ -132,6 +138,14 @@ int copy_process(int nr,long ebp,long edi,long esi,long gs,long none,
 	return last_pid;
 }
 
+/**
+ * @brief  : Obtains the unduplicated process number last_pid for
+ * the new process and returns the task number in the task array
+ * (array index).
+ * @param  : void
+ * @return : task i
+ * @time   : 2024/05/25 10:53:48
+ */
 int find_empty_process(void)
 {
 	int i;

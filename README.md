@@ -4,7 +4,15 @@
 >
 > Author : Nick Xia
 >
-> Blog    : https://aeneag.xyz  
+> Blog   : https://aeneag.xyz
+
+## Introduction
+
+Personally, I am interested in operating systems, and I learn about systems by reading linux source code.
+
+## 2024/05/25
+
+learning knowledge about process, process ending.
 
 ## 2023/12/02
 

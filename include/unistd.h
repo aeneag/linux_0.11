@@ -130,18 +130,24 @@
 #define __NR_setreuid	70
 #define __NR_setregid	71
 
-#define _syscall0(type,name) \
-type name(void) \
-{ \
-long __res; \
-__asm__ volatile ("int $0x80" \
-	: "=a" (__res) \
-	: "0" (__NR_##name)); \
-if (__res >= 0) \
-	return (type) __res; \
-errno = -__res; \
-return -1; \
-}
+/**
+ * @brief  : fork
+ * @param  : 
+ * @return :
+ * @time   : 2024/05/25 10:41:54
+ */
+#define _syscall0(type, name)                 \
+	type name(void)                           \
+	{                                         \
+		long __res;                           \
+		__asm__ volatile("int $0x80"          \
+						 : "=a"(__res)        \
+						 : "0"(__NR_##name)); \
+		if (__res >= 0)                       \
+			return (type)__res;               \
+		errno = -__res;                       \
+		return -1;                            \
+	}
 
 #define _syscall1(type,name,atype,a) \
 type name(atype a) \
