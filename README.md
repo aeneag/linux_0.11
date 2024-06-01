@@ -10,6 +10,12 @@
 
 Personally, I am interested in operating systems, and I learn about systems by reading linux source code.
 
+# 2024/06/01
+
+Happy Children's Day.
+
+load file system, open file etc.
+
 ## 2024/05/25
 
 learning knowledge about process, process ending.

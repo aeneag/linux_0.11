@@ -222,11 +222,18 @@ static char * envp_rc[] = { "HOME=/", NULL };
 static char * argv[] = { "-/bin/sh",NULL };
 static char * envp[] = { "HOME=/usr/root", NULL };
 
+/**
+ * @brief  : init function
+ * @param  : void
+ * @return : void
+ * @time   : 2024/06/01 08:43:37
+ */
 void init(void)
 {
 	int pid,i;
-
+	/* get drive info, hhd */
 	setup((void *) &drive_info);
+	/* linux core funciton, open file */
 	(void) open("/dev/tty0",O_RDWR,0);
 	(void) dup(0);
 	(void) dup(0);

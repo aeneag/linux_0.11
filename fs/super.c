@@ -239,6 +239,13 @@ int sys_mount(char * dev_name, char * dir_name, int rw_flag)
 	return 0;			/* we do that in umount */
 }
 
+/**
+ * @brief  : load root file sysytem
+ * @param  : void
+ * @return : void
+ * @time   : 2024/06/01 09:17:34
+ * @description : the function, reading hhd info, get inode 0
+ */
 void mount_root(void)
 {
 	int i,free;

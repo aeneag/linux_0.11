@@ -68,6 +68,12 @@ extern void hd_interrupt(void);
 extern void rd_load(void);
 
 /* This may be used only once, enforced by 'static int callable' */
+/**
+ * @brief  : get drive info, source addr 0x90080
+ * @param  : void* BIOSS = 0x90080
+ * @return : 0
+ * @time   : 2024/06/01 08:47:01
+ */
 int sys_setup(void * BIOS)
 {
 	static int callable = 1;
@@ -81,11 +87,17 @@ int sys_setup(void * BIOS)
 	callable = 0;
 #ifndef HD_TYPE
 	for (drive=0 ; drive<2 ; drive++) {
+		/* 柱面数 */
 		hd_info[drive].cyl = *(unsigned short *) BIOS;
+		/* 磁头数 */
 		hd_info[drive].head = *(unsigned char *) (2+BIOS);
+		/* 写前补偿柱面号 */
 		hd_info[drive].wpcom = *(unsigned short *) (5+BIOS);
+		/* 控制字节 */
 		hd_info[drive].ctl = *(unsigned char *) (8+BIOS);
+		/* 磁头柱面号 */
 		hd_info[drive].lzone = *(unsigned short *) (12+BIOS);
+		/* 磁道的扇区数 */
 		hd_info[drive].sect = *(unsigned char *) (14+BIOS);
 		BIOS += 16;
 	}
@@ -153,7 +165,9 @@ int sys_setup(void * BIOS)
 	}
 	if (NR_HD)
 		printk("Partition table%s ok.\n\r",(NR_HD>1)?"s":"");
+	/* ramdisk */
 	rd_load();
+	/* load root file system */
 	mount_root();
 	return (0);
 }

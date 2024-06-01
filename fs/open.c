@@ -135,6 +135,15 @@ int sys_chown(const char * filename,int uid,int gid)
 	return 0;
 }
 
+/**
+ * @brief  : open function,
+ * @param  : file name
+ * @param  : flag read or write, others
+ * @param  : mode
+ * @return : fd number
+ * @time   : 2024/06/01 09:35:15
+ * @description : get file info from hhd
+ */
 int sys_open(const char * filename,int flag,int mode)
 {
 	struct m_inode * inode;
